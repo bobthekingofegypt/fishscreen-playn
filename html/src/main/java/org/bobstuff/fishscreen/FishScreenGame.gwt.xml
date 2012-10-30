@@ -1,0 +1,12 @@
+<module rename-to='fishscreen'>
+  <inherits name='playn.PlayN'/>
+  <inherits name="tripleplay.TriplePlay"/>
+  
+  <source path='core'/>
+  <source path='html'/>
+
+  <public path="resources" />
+
+  <entry-point class='org.bobstuff.fishscreen.html.FishScreenGameHtml'/>
+  
+</module>
