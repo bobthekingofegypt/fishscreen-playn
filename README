@@ -1,0 +1,4 @@
+Playing with PlayN a little bit to see how it works.
+
+This a version of sfeirs port of Microsofts IE demo aquarium.
+It's updated to playn 1.4 and tripleplay for the UI.  There is an async image loading progress tracker added aswell.
