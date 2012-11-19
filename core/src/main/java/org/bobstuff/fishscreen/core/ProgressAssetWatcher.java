@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import playn.core.Image;
+import playn.core.Sound;
 import playn.core.ResourceCallback;
+
 
 /**
  * @author bob
  *
  */
-public class ProgressAssetWatcher implements ResourceCallback<Image> {
+public class ProgressAssetWatcher implements ResourceCallback {
 	
 	private int loaded;
 	private int errors;
@@ -19,18 +21,24 @@ public class ProgressAssetWatcher implements ResourceCallback<Image> {
 	private final Listener listener;
 	
 	private List<Image> imagesToLoad;
+	private List<Sound> soundsToLoad;
 	
 	public ProgressAssetWatcher(Listener listener) {
 		this.listener = listener;
 		this.imagesToLoad = new ArrayList<Image>();
+		this.soundsToLoad = new ArrayList<Sound>();
 	}
 
 	public void add(Image image) {
 		imagesToLoad.add(image);
 	}
+
+	public void add(Sound sound){
+		soundsToLoad.add(sound);
+	}
 	
 	public boolean isDone() {
-		return started && (loaded + errors == imagesToLoad.size());
+		return started && (loaded + errors == imagesToLoad.size() + soundsToLoad.size());
 	}
 
 	public void start() {
@@ -39,11 +47,14 @@ public class ProgressAssetWatcher implements ResourceCallback<Image> {
 		for (Image image : imagesToLoad) {
 			image.addCallback(this);
 		}
+		for(Sound sound : soundsToLoad){
+			sound.addCallback(this);
+		}
 	}
 	
 	private void reportProgress() {
 		if (listener != null) {
-			int percentage = Math.round(((loaded + errors) / (float)imagesToLoad.size()) * 100);
+			int percentage = Math.round(((loaded + errors) / (float)(imagesToLoad.size() + soundsToLoad.size())) * 100);
 			listener.progress(percentage);
 		}
 	}
@@ -58,7 +69,7 @@ public class ProgressAssetWatcher implements ResourceCallback<Image> {
 	}
 	
 	@Override
-	public void done(Image resource) {
+	public void done(Object resource) {
 		++loaded;
 		maybeDone();
 	}
